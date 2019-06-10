@@ -1,3 +1,16 @@
+<?php
+
+    session_start();
+
+    if ((isset($_SESSION['zalogowany'])) && ($_SESSION['zalogowany']==true))
+    {
+        header('Location: zadania.php');
+        exit();
+    }
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,13 +34,18 @@
               </ul>
           </div>
           <div id="panel">
-            <form>
-              LOGIN:<br>
-              <input type="text" name="login" value="">
+            <form action="zaloguj.php" method="post">
+              email:<br>
+              <input type="text" name="email" value="">
               <br>
               PASSWORD:<br>
-              <input type="text" name="password" value="">
+              <input type="text" name="haslo" value="">
+              <br>
+              <input type="submit" value="zaloguj się">
             </form>
+            <?php
+    if(isset($_SESSION['blad']))    echo $_SESSION['blad'];
+?>
           </div>
           <div class="clear"></div>
           <div id="home">
