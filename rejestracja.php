@@ -23,6 +23,7 @@ if(isset($_POST['email']))
             $wszystko_OK=false;
             $_SESSION['e_haslo']="Hasło musi posiadać od 8 do 20 znaków!";
         }
+
   if($haslo1!=$haslo2)
   {
     $wszystko_OK=false;
@@ -31,14 +32,54 @@ if(isset($_POST['email']))
 
 
   $haslo_hash = password_hash($haslo1, PASSWORD_DEFAULT);
-  echo $haslo_hash; exit();
-  //echo password_get_info($haslo_hash);
+// czy checkbox zaznaczony
+if(!isset($_POST['regulamin']))
+
+  {
+    $wszystko_OK=false;
+    $_SESSION['e_haslo']="potwierdz regulamin";
+
+  }
+
+  require_once "connect.php";
+
+  mysqli_report(MYSQLI_REPORT_STRICT);
+
+  try
+  {
+      $polaczenie = new mysqli($host, $db_user, $db_password, $db_name);
+      if ($polaczenie->connect_errno!=0)
+      {
+        throw new Exception(mysqli_connect_error());
+      }
+      else {
+        $rezultat = $polaczenie->query("SELECT ID FROM uzytkownicy WHERE email='$email'");
+        if(!$rezultat) throw new Exception($polaczenie->error);
+
+        $maile_ilosc = $rezultat->num_rows;
+        if($maile_ilosc>0)
+        {
+          $wszystko_OK=false;
+          $_SESSION['e_email']="Istnieje już konto o tym adresie";
+        }
+
+
+        $polaczenie->close();
+      }
+
+  }
+  catch (Exception $e)
+  {
+      echo '<span style="color:red">Błąd serwera</span>';
+      //ECHO "<BR/>Informacja o błędzie ".$e;
+  }
+
   if($wszystko_ok==true)
   {
     echo "wszystko jest okej";
   //INSERT INTO uzytkownicy
   }
-//$2y$10$4sZdn0EaurMzGCAla1Up7OJ8vDmhJjKdsyCtQIAIuJ3AuxQ0m0Tly
+
 
 }
  ?>
@@ -74,6 +115,13 @@ if(isset($_POST['email']))
     Powtorz haslo: <br/><input type="password" name="haslo2"/></br>
 
     <label><input type="checkbox" name="regulamin"/> Akceptuje Regulamin</label>
+    <?php
+            if (isset($_SESSION['e_regulamin']))
+            {
+                echo '<div class="error">'.$_SESSION['e_regulamin'].'</div>';
+                unset($_SESSION['e_regulamin']);
+            }
+        ?>
     <br/><input type="submit" value="zarejestruj sie"/>
   </form>
 

@@ -16,7 +16,6 @@
         exit();
     }
 
-    require_once "connect.php";
 
     $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
 
@@ -37,39 +36,27 @@
             if($ilu_userow>0)
             {
                 $wiersz = $rezultat->fetch_assoc();
-                if(password_verify($haslo, $wiersz['haslo']))
-                {
+                if (password_verify($haslo, $wiersz['Haslo']))
+                				{
+                					$_SESSION['zalogowany'] = true;
+                					$_SESSION['id'] = $wiersz['ID'];
+                					$_SESSION['email'] = $wiersz['Email'];
+                					$_SESSION['konto'] = $wiersz['Konto'];
 
 
+                					unset($_SESSION['blad']);
+                					$rezultat->free_result();
+                					header('Location: zadania.php');
+                				}
 
-                $_SESSION['zalogowany'] = true;
+                				else
+                				{
+                					$_SESSION['blad'] = '<span style="color:red">Nieprawidłowy login lub hasło!</span>';
+                					header('Location: index.php');
+                				}
 
-
-                $_SESSION['id'] = $wiersz['id'];
-                $_SESSION['email'] = $wiersz['email'];
-                $_SESSION['konto'] = $wiersz['konto'];
-
-
-
-
-                unset($_SESSION['blad']);
-                $rezultat->free_result();
-                header('Location: zadania.php');
               }
-
-
               else
-               {
-
-                  $_SESSION['blad'] = '<span style="color:red">Nieprawidłowy email lub hasło!</span>';
-                  header('Location: index.php');
-
-              }
-
-
-            }
-
-            else
 
             {
 
