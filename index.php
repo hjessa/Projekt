@@ -1,3 +1,7 @@
+
+<!--
+Sprawdzenie czy jakiś użytkownik jest obecnie zalogowany, jeśli tak, przenieś na docelową stronę
+-->
 <?php
 
     session_start();
@@ -38,13 +42,19 @@
               email:<br>
               <input type="text" name="email" value="">
               <br>
+
               PASSWORD:<br>
-              <input type="text" name="haslo" value="">
+              <input type="password" name="haslo" value="">
               <br>
               <input type="submit" value="zaloguj się">
             </form>
+            <a href="rejestracja.php">Rejestracja</a>
+            <!--
+            Wywołanie zmiennej, pobranej z sesji o nazwie blad, jesli istnieje
+            -->
+
             <?php
-    if(isset($_SESSION['blad']))    echo $_SESSION['blad'];
+  if(isset($_SESSION['blad']))    echo $_SESSION['blad'];
 ?>
           </div>
           <div class="clear"></div>

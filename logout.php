@@ -1,3 +1,5 @@
+Zamykamy sesje zalogowanego uzytkownika i kierujemy sie na strone glowna
+
 <?php
 
     session_start();

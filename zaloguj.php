@@ -1,4 +1,12 @@
 <?php
+//@echo sprawdzenie czy zostały wypełnione pola w fomrularzu e-mail oraz haslo,
+//jesli nie zakoncz instrukcje i cofnij sie do index.php, w przeciwnym wypadku wykonaj
+//kod z pliku connect.php, zadeklaruj zmienną połączenie w której wykonujemy łączenie do bazy,
+//jeżeli wystąpi błąd podaj kod błędu, jeżeli nie pobierz zmienne email i haslo, kolejna instrukcja warunkowa
+//sprawdza czy zapytanie sie wykona + mysqli_real_escape_string -> funkcja zabezpieczajaca
+//jezeli podane zostalo prawidlowe haslo i login, user ma status zalogowanego i wyciagamy z bazy
+//jego rekord + nie ustawiamy bledu dla index.php i kierujemy sie na podstrone z zadaniami
+//w przeciwnym wypadku ustawiamy zmienna blad jako nieprawidlowe haslo lub mail
 
     session_start();
 
@@ -21,31 +29,49 @@
         $email = $_POST['email'];
         $haslo = $_POST['haslo'];
 
-        $email = htmlentities($email, ENT_QUOTES, "UTF-8");
-        $haslo = htmlentities($haslo, ENT_QUOTES, "UTF-8");
-
         if ($rezultat = @$polaczenie->query(
-        sprintf("SELECT * FROM uzytkownicy WHERE email='%s' AND haslo='%s'",
-        mysqli_real_escape_string($polaczenie,$email),
-        mysqli_real_escape_string($polaczenie,$haslo))))
+        sprintf("SELECT * FROM uzytkownicy WHERE email='%s' ",
+        mysqli_real_escape_string($polaczenie,$email))))
         {
             $ilu_userow = $rezultat->num_rows;
             if($ilu_userow>0)
             {
+                $wiersz = $rezultat->fetch_assoc();
+                if(password_verify($haslo, $wiersz['haslo']))
+                {
+
+
+
                 $_SESSION['zalogowany'] = true;
 
-                $wiersz = $rezultat->fetch_assoc();
+
                 $_SESSION['id'] = $wiersz['id'];
                 $_SESSION['email'] = $wiersz['email'];
                 $_SESSION['konto'] = $wiersz['konto'];
 
 
 
+
                 unset($_SESSION['blad']);
                 $rezultat->free_result();
                 header('Location: zadania.php');
+              }
 
-            } else {
+
+              else
+               {
+
+                  $_SESSION['blad'] = '<span style="color:red">Nieprawidłowy email lub hasło!</span>';
+                  header('Location: index.php');
+
+              }
+
+
+            }
+
+            else
+
+            {
 
                 $_SESSION['blad'] = '<span style="color:red">Nieprawidłowy email lub hasło!</span>';
                 header('Location: index.php');

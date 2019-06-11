@@ -87,3 +87,11 @@ a:hover
   height: 5%;
   background-color: yellow;
 }
+
+
+.error
+{
+  color: BLUE;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

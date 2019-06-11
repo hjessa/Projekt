@@ -1,3 +1,7 @@
+<!--
+Połączenie do bazy
+-->
+
 <?php
 
     $host = "localhost";
