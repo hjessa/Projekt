@@ -1,0 +1,48 @@
+.main-header {
+  background-color: #310995;
+  justify-content: center;
+  color: white;
+}
+
+.logo {
+  max-width: 300px;
+}
+
+.title {
+  text-align: center;
+}
+
+.description {
+  text-align: center;
+  display: block;
+  padding-bottom: 10px;
+  padding-bottom: 2%;
+}
+
+input {
+  display: block;
+}
+
+html, body {
+  background-color: #e7e7e7 !important;
+}
+
+.container {
+  width: 50%;
+  margin: auto;
+  margin-top: 5%;
+}
+
+#register {
+  background-color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10%;
+  text-align: center;
+}
+
+#log_in {
+  display: block;
+}
+
+/*# sourceMappingURL=index.css.map */
